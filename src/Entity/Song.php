@@ -21,7 +21,7 @@ class Song
     #[ORM\Column]
     private ?int $length = null;
 
-    #[ORM\ManyToOne(inversedBy: 'songs')]
+    #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Album $album = null;
 

@@ -23,14 +23,14 @@ class Artist
     #[ORM\Column(length: 255)]
     private ?string $style = null;
 
-    #[ORM\OneToMany(mappedBy: 'artist', targetEntity: Album::class)]
+    #[ORM\OneToMany(mappedBy: 'artist', targetEntity: Album::class, orphanRemoval: true)]
     private Collection $albums;
 
     public function __construct()
     {
         $this->albums = new ArrayCollection();
     }
-   
+
     public function getId(): ?int
     {
         return $this->id;
@@ -56,7 +56,7 @@ class Artist
     public function setStyle(string $style): self
     {
         $this->style = $style;
-        
+
         return $this;
     }
 
@@ -88,5 +88,5 @@ class Artist
         }
 
         return $this;
-    }
+    }    
 }
