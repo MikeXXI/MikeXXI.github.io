@@ -9,12 +9,22 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Patch;
 
 use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiProperty;
 
 #[ORM\Entity(repositoryClass: SongRepository::class)]
 #[ApiResource()]
+#[Get]
+#[Put(security: "is_granted('ROLE_USER')")]
+#[Post(security: "is_granted('ROLE_USER')")]
+#[Delete(security: "is_granted('ROLE_USER')")]
+#[Patch(security: "is_granted('ROLE_USER')")]
+#[GetCollection]
 #[ApiResource(
     uriTemplate: '/artist/{id}/album/{albumId}/song/{songId}',
     uriVariables: [
@@ -25,6 +35,7 @@ use ApiPlatform\Metadata\ApiFilter;
     operations: [new Get()]
 )]
 #[ApiFilter(RangeFilter::class, properties: ['length'])]
+#[ApiProperty(security: "is_granted('ROLE_USER')", securityPostDenormalize: "is_granted('GET', object)")]
 class Song
 {
     #[ORM\Id]
@@ -35,6 +46,7 @@ class Song
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
+    
     #[ORM\Column]
     private ?int $length = null;
 

@@ -11,12 +11,23 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Patch;
 
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 
+use Symfony\Component\Serializer\Annotation\Groups;
+
 #[ORM\Entity(repositoryClass: ArtistRepository::class)]
-#[ApiResource]
+#[ApiResource()]
+#[Get]
+#[Put(security: "is_granted('ROLE_USER')")]
+#[Post(security: "is_granted('ROLE_USER')")]
+#[Delete(security: "is_granted('ROLE_USER')")]
+#[Patch(security: "is_granted('ROLE_USER')")]
+#[GetCollection]
 #[ApiResource(
     uriTemplate: '/artist/{id}',
     uriVariables: [
@@ -32,9 +43,11 @@ class Artist
     #[ORM\Column]
     private ?int $id = null;
 
+    
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    
     #[ORM\Column(length: 255)]
     private ?string $style = null;
 

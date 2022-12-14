@@ -10,9 +10,18 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Patch;
 
 #[ORM\Entity(repositoryClass: AlbumRepository::class)]
-#[ApiResource]
+#[ApiResource()]
+#[Get]
+#[Put(security: "is_granted('ROLE_USER')")]
+#[Post(security: "is_granted('ROLE_USER')")]
+#[Delete(security: "is_granted('ROLE_USER')")]
+#[Patch(security: "is_granted('ROLE_USER')")]
+#[GetCollection]
 #[ApiResource(
     uriTemplate: '/artist/{id}/album/{albumId}',
     uriVariables: [
