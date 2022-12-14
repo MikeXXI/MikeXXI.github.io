@@ -5,9 +5,26 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\SongRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Get;
+
+use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Metadata\ApiFilter;
 
 #[ORM\Entity(repositoryClass: SongRepository::class)]
-#[ApiResource]
+#[ApiResource()]
+#[ApiResource(
+    uriTemplate: '/artist/{id}/album/{albumId}/song/{songId}',
+    uriVariables: [
+        'id' => new Link(fromClass: Artist::class, toProperty: 'artist'),           
+        'albumId' => new Link(fromClass: Album::class, toProperty: 'album'),
+        'songId' => new Link(fromClass: Song::class)
+    ],
+    operations: [new Get()]
+)]
+#[ApiFilter(RangeFilter::class, properties: ['length'])]
 class Song
 {
     #[ORM\Id]

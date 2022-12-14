@@ -7,9 +7,24 @@ use App\Repository\ArtistRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Get;
+
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 
 #[ORM\Entity(repositoryClass: ArtistRepository::class)]
 #[ApiResource]
+#[ApiResource(
+    uriTemplate: '/artist/{id}',
+    uriVariables: [
+        'id' => new Link(fromClass: Artist::class)
+    ],
+    operations: [new Get()]
+)]
+#[ApiFilter(SearchFilter::class, properties: ['style' => 'ipartial'])]
 class Artist
 {
     #[ORM\Id]

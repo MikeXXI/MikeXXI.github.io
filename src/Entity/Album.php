@@ -6,9 +6,21 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\AlbumRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Get;
 
 #[ORM\Entity(repositoryClass: AlbumRepository::class)]
 #[ApiResource]
+#[ApiResource(
+    uriTemplate: '/artist/{id}/album/{albumId}',
+    uriVariables: [
+        'id' => new Link(fromClass: Artist::class, toProperty: 'artist'),           
+        'albumId' => new Link(fromClass: Album::class),
+    ],
+    operations: [new Get()]
+)]
 class Album
 {
     #[ORM\Id]
